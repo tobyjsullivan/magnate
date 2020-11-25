@@ -23,7 +23,7 @@ export default class GeographyService {
     return await this.neighbourhoods.createNeighbourhood(name);
   }
 
-  async getAllNeighbourhoods(): Promise<ReadonlyArray<Neighbourhood>> {
+  async findAllNeighbourhoods(): Promise<ReadonlyArray<Neighbourhood>> {
     const hoodIds = await this.neighbourhoods.findNeighbourhoods();
     const hoods = await this.neighbourhoods.getNeighbourhoods(hoodIds);
     return [...hoods.values()];

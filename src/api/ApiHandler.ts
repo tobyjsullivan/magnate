@@ -11,7 +11,7 @@ import { schema } from './Schema';
 export function buildHandler(geographySvc: GeographyService, propertySvc: PropertyService): RequestHandler {
   const root = {
     allNeighbourhoods: async ({}): Promise<ReadonlyArray<NeighbourhoodResult>> => {
-      const allHoods: ReadonlyArray<Neighbourhood> = await geographySvc.getAllNeighbourhoods();
+      const allHoods: ReadonlyArray<Neighbourhood> = await geographySvc.findAllNeighbourhoods();
       return allHoods.map(hood => new NeighbourhoodResult(geographySvc, propertySvc, hood));
     },
     allProperties: async ({}): Promise<ReadonlyArray<PropertyResult>> => {

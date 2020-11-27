@@ -1,17 +1,17 @@
-import { PersonId } from "../model/Person";
+import { PlayerId } from "../model/Player";
 import { LotId } from "../model/Lot";
 
 export default class LandTitleRegistry {
-  private readonly ownersByLotId: Map<LotId, PersonId> = new Map();
+  private readonly ownersByLotId: Map<LotId, PlayerId> = new Map();
 
-  async searchOwner(lot: LotId): Promise<PersonId | undefined> {
+  async searchOwner(lot: LotId): Promise<PlayerId | undefined> {
     if (!this.ownersByLotId.has(lot)) {
       return undefined;
     }
     return this.ownersByLotId.get(lot);
   }
 
-  async transferOwnership(lot: LotId, currentOwner: PersonId | undefined, newOwner: PersonId) {
+  async transferOwnership(lot: LotId, currentOwner: PlayerId | undefined, newOwner: PlayerId) {
     if (currentOwner === undefined) {
       if (this.ownersByLotId.has(lot)) {
         throw new Error(`Attempted to transfer owned property without specifying current owner. ${lot}`);

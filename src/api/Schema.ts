@@ -1,6 +1,11 @@
 import { buildSchema } from "graphql";
 
 export const schema = buildSchema(`
+type Player {
+  id: String!
+  name: String!
+}
+
 type Neighbourhood {
   id: String!
   name: String!
@@ -25,6 +30,7 @@ type Lot {
   id: String!
   street: Street!
   lotNumber: Int!
+  owner: Player
   neighbourhood: Neighbourhood!
 }
 
@@ -38,5 +44,6 @@ type Query {
   allNeighbourhoods: [Neighbourhood]!
   allLots: [Lot]!
   allListings: [Listing]!
+  allPlayers: [Player]!
 }
 `);

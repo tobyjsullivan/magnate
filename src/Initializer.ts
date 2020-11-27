@@ -1,5 +1,6 @@
 import GeographyService from "./geography/GeographyService";
 import Street from "./model/Street";
+import PlayerService from "./players/PlayerService";
 import PropertyService from "./property/PropertyService";
 
 const NEIGHBOURHOOD_NAMES = [
@@ -1115,11 +1116,11 @@ const STREET_NAMES = [
 
 export default class Initializer {
   private readonly geographySvc: GeographyService;
-  private readonly propertySvc: PropertyService;
+  private readonly playerSvc: PlayerService;
 
-  constructor(geographySvc: GeographyService, propertySvc: PropertyService) {
+  constructor(geographySvc: GeographyService, playerSvc: PlayerService) {
     this.geographySvc = geographySvc;
-    this.propertySvc = propertySvc;
+    this.playerSvc = playerSvc;
   }
 
   async init() {
@@ -1146,5 +1147,8 @@ export default class Initializer {
       // TODO: Ensure the block is free before trying to use it.
       await this.geographySvc.assignBlockToNeighbourhood(streetId, neighbourhoodId, 1, 100);
     }
+
+    // Create a demo player
+    await this.playerSvc.createPlayer('Player 1');
   }
 }

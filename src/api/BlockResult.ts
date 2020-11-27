@@ -1,19 +1,21 @@
 import GeographyService from "../geography/GeographyService";
 import Block from "../model/Block";
-import PropertyService from "../property/PropertyService";
+import EntityResultFactory from "./EntityResultFactory";
 import NeighbourhoodResult from "./NeighbourhoodResult";
 import StreetResult from "./StreetResult";
 
 export default class BlockResult {
   private readonly geographySvc: GeographyService;
-  private readonly propertySvc: PropertyService;
+  private readonly entityResultFactory: EntityResultFactory;
+
   readonly id: string;
   readonly startLotNumber: number;
   readonly endLotNumber: number;
 
-  constructor(geographySvc: GeographyService, propertySvc: PropertyService, block: Block) {
+  constructor(geographySvc: GeographyService, entityResultFactory: EntityResultFactory, block: Block) {
     this.geographySvc = geographySvc;
-    this.propertySvc = propertySvc;
+    this.entityResultFactory = entityResultFactory;
+
     this.id = block.id;
     this.startLotNumber = block.startNumber;
     this.endLotNumber = block.endNumber;
@@ -21,11 +23,11 @@ export default class BlockResult {
 
   async street(): Promise<StreetResult> {
     const street = await this.geographySvc.getBlockStreet(this.id);
-    return new StreetResult(this.geographySvc, this.propertySvc, street);
+    return this.entityResultFactory.createStreetResult(street);
   }
 
   async neighbourhood(): Promise<NeighbourhoodResult> {
     const neighbourhood = await this.geographySvc.getBlockNeighbourhood(this.id);
-    return new NeighbourhoodResult(this.geographySvc, this.propertySvc, neighbourhood);
+    return this.entityResultFactory.createNeighbourhoodResult(neighbourhood);
   }
 }

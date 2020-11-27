@@ -7,5 +7,4 @@ export default interface Property {
   id: PropertyId,
   street: StreetId,
   lotNumber: LotNumber,
-  unit?: string,
 }

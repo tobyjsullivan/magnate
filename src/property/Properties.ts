@@ -17,13 +17,12 @@ interface FindPropertyCriteria {
 export default class Properties {
   private readonly propertiesById: Map<PropertyId, Property> = new Map();
 
-  async createProperty(street: StreetId, lotNumber: LotNumber, unit?: string): Promise<PropertyId> {
+  async createProperty(street: StreetId, lotNumber: LotNumber): Promise<PropertyId> {
     const id = uuidv4();
     const property: Property = {
       id,
       street,
       lotNumber,
-      unit,
     };
     this.propertiesById.set(id, property);
     return id;

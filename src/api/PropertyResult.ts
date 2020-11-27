@@ -9,14 +9,12 @@ export default class PropertyResult {
   private readonly geographySvc: GeographyService;
   readonly id: string;
   readonly lotNumber: number;
-  readonly unit?: string;
 
   constructor(propertySvc: PropertyService, geographySvc: GeographyService, property: Property) {
     this.propertySvc = propertySvc;
     this.geographySvc = geographySvc;
     this.id = property.id;
     this.lotNumber = property.lotNumber;
-    this.unit = property.unit;
   }
 
   async street(): Promise<StreetResult> {

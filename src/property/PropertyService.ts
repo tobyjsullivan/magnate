@@ -13,7 +13,7 @@ export default class PropertyService {
     this.geographySvc = geographySvc;
   }
 
-  async createProperty(street: StreetId, number: LotNumber, unit?: string): Promise<PropertyId> {
+  async createProperty(street: StreetId, number: LotNumber): Promise<PropertyId> {
     // Check if the property already exists
     const conflictingIds = await this.properties.findProperties({
       streetFilter: {
@@ -24,15 +24,11 @@ export default class PropertyService {
         },
       },
     });
-    // Check the specific units
-    const conflictingProps = await this.properties.getProperties(conflictingIds);
-    for (const prop of conflictingProps.values()) {
-      if (prop.unit === undefined || prop.unit === unit) {
-        throw new Error(`Cannot create Property when one already exists at that address: ${prop.id}`);
-      }
+    if (conflictingIds.length > 0) {
+      throw new Error(`Cannot create Property when one already exists at that address: ${conflictingIds[0]}`);
     }
 
-    return await this.properties.createProperty(street, number, unit);
+    return await this.properties.createProperty(street, number);
   }
 
   async getProperties(propertyIds: PropertyId[]): Promise<Map<PropertyId, Property>> {

@@ -25,7 +25,6 @@ type Property {
   id: String!
   street: Street!
   lotNumber: Int!
-  unit: String
   neighbourhood: Neighbourhood!
 }
 

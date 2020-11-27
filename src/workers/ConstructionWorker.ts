@@ -36,8 +36,7 @@ export default class ConstructionWorker extends Worker {
 
     const lotNum = block.startNumber + Math.round(Math.random() * (block.endNumber - block.startNumber));
 
-    const unit: string | undefined = undefined; // TODO: Support apartment units
-    const propertyId = await this.propertySvc.createProperty(block.street, lotNum, unit);
+    const propertyId = await this.propertySvc.createProperty(block.street, lotNum);
     console.log(`Created new property: ${propertyId}`);
 
     this.nextConstruction += PROPERTY_CONSTRUCTION_INTERVAL_MILLIS;

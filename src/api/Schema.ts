@@ -29,8 +29,15 @@ type Property {
   neighbourhood: Neighbourhood!
 }
 
+type Listing {
+  id: String!
+  property: Property!
+  askingPrice: Int!
+}
+
 type Query {
   allNeighbourhoods: [Neighbourhood]!
   allProperties: [Property]!
+  allListings: [Listing]!
 }
 `);

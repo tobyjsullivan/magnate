@@ -35,6 +35,10 @@ export default class PropertyService {
     return await this.properties.createProperty(street, number, unit);
   }
 
+  async getProperties(propertyIds: PropertyId[]): Promise<Map<PropertyId, Property>> {
+    return await this.properties.getProperties(propertyIds);
+  }
+
   async getPropertyStreet(propertyId: PropertyId): Promise<Street> {
     const properties = await this.properties.getProperties([propertyId]);
     const property = properties.get(propertyId);

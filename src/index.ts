@@ -38,7 +38,7 @@ async function main() {
   await initializer.init();
 
   const app = express();
-  app.post('/graphql', buildHandler(geographySvc, propertySvc));
+  app.post('/graphql', buildHandler(geographySvc, propertySvc, listingSvc));
 
   constructionWorker.startLoop();
   sellerAgentWorker.startLoop();

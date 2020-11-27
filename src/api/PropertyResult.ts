@@ -8,14 +8,14 @@ export default class PropertyResult {
   private readonly propertySvc: PropertyService;
   private readonly geographySvc: GeographyService;
   readonly id: string;
-  readonly buildingNumber: number;
+  readonly lotNumber: number;
   readonly unit?: string;
 
   constructor(propertySvc: PropertyService, geographySvc: GeographyService, property: Property) {
     this.propertySvc = propertySvc;
     this.geographySvc = geographySvc;
     this.id = property.id;
-    this.buildingNumber = property.buildingNumber;
+    this.lotNumber = property.lotNumber;
     this.unit = property.unit;
   }
 

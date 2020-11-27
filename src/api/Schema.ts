@@ -10,8 +10,8 @@ type Neighbourhood {
 type Block {
   id: String!
   street: Street!
-  startNumber: Int!
-  endNumber: Int!
+  startLotNumber: Int!
+  endLotNumber: Int!
   neighbourhood: Neighbourhood!
 }
 
@@ -24,7 +24,7 @@ type Street {
 type Property {
   id: String!
   street: Street!
-  buildingNumber: Int!
+  lotNumber: Int!
   unit: String
   neighbourhood: Neighbourhood!
 }

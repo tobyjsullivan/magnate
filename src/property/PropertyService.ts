@@ -1,6 +1,6 @@
 import GeographyService from "../geography/GeographyService";
 import Neighbourhood, { NeighbourhoodId } from "../model/Neighbourhood";
-import Property, { BuildingNumber, PropertyId } from "../model/Property";
+import Property, { LotNumber, PropertyId } from "../model/Property";
 import Street, { StreetId } from "../model/Street";
 import Properties from "./Properties";
 
@@ -13,12 +13,12 @@ export default class PropertyService {
     this.geographySvc = geographySvc;
   }
 
-  async createProperty(street: StreetId, number: BuildingNumber, unit?: string): Promise<PropertyId> {
+  async createProperty(street: StreetId, number: LotNumber, unit?: string): Promise<PropertyId> {
     // Check if the property already exists
     const conflictingIds = await this.properties.findProperties({
       streetFilter: {
         street,
-        buildingNumbers: {
+        lotNumbers: {
           start: number,
           end: number,
         },
@@ -49,7 +49,7 @@ export default class PropertyService {
   async getPropertyNeighbourhood(propertyId: PropertyId): Promise<Neighbourhood> {
     const properties = await this.properties.getProperties([propertyId]);
     const property = properties.get(propertyId);
-    return await this.geographySvc.findNeighbourhoodByAddress(property.street, property.buildingNumber);
+    return await this.geographySvc.findNeighbourhoodByAddress(property.street, property.lotNumber);
   }
 
   async findAllProperties(): Promise<ReadonlyArray<Property>> {
@@ -66,7 +66,7 @@ export default class PropertyService {
       const propertyIds = await this.properties.findProperties({
         streetFilter: {
           street: block.street,
-          buildingNumbers: {
+          lotNumbers: {
             start: block.startNumber,
             end: block.endNumber,
           },

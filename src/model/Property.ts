@@ -1,11 +1,11 @@
 import { StreetId } from "./Street";
 
 export type PropertyId = string;
-export type BuildingNumber = number;
+export type LotNumber = number;
 
 export default interface Property {
   id: PropertyId,
   street: StreetId,
-  buildingNumber: BuildingNumber,
+  lotNumber: LotNumber,
   unit?: string,
 }

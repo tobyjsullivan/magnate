@@ -1,12 +1,12 @@
 import {v4 as uuidv4} from 'uuid';
-import Property, { BuildingNumber, PropertyId } from '../model/Property';
+import Property, { LotNumber as LotNumber, PropertyId } from '../model/Property';
 import { StreetId } from '../model/Street';
 
 interface StreetFilter {
   street: StreetId,
-  buildingNumbers?: {
-    start: BuildingNumber,
-    end: BuildingNumber,
+  lotNumbers?: {
+    start: LotNumber,
+    end: LotNumber,
   },
 }
 
@@ -17,12 +17,12 @@ interface FindPropertyCriteria {
 export default class Properties {
   private readonly propertiesById: Map<PropertyId, Property> = new Map();
 
-  async createProperty(street: StreetId, number: BuildingNumber, unit?: string): Promise<PropertyId> {
+  async createProperty(street: StreetId, lotNumber: LotNumber, unit?: string): Promise<PropertyId> {
     const id = uuidv4();
     const property: Property = {
       id,
       street,
-      buildingNumber: number,
+      lotNumber,
       unit,
     };
     this.propertiesById.set(id, property);
@@ -36,9 +36,9 @@ export default class Properties {
     if (streetFilter) {
       matches = matches.filter(prop => prop.street === streetFilter.street);
 
-      if (streetFilter.buildingNumbers) {
-        const {start, end} = streetFilter.buildingNumbers;
-        matches = matches.filter(prop => prop.buildingNumber >= start && prop.buildingNumber <= end);
+      if (streetFilter.lotNumbers) {
+        const {start, end} = streetFilter.lotNumbers;
+        matches = matches.filter(prop => prop.lotNumber >= start && prop.lotNumber <= end);
       }
     }
 

@@ -1,6 +1,6 @@
 import Block, { BlockId } from "../model/Block";
 import Neighbourhood, { NeighbourhoodId } from "../model/Neighbourhood";
-import { BuildingNumber } from "../model/Property";
+import { LotNumber } from "../model/Property";
 import Street, { StreetId } from "../model/Street";
 import Blocks from "./Blocks";
 import Neighbourhoods from "./Neighbourhoods";
@@ -58,12 +58,12 @@ export default class GeographyService {
     return [...blocks.values()];
   }
 
-  async assignBlockToNeighbourhood(street: StreetId, neighbourhood: NeighbourhoodId, startNumber: BuildingNumber, endNumber: BuildingNumber): Promise<BlockId> {
+  async assignBlockToNeighbourhood(street: StreetId, neighbourhood: NeighbourhoodId, startNumber: LotNumber, endNumber: LotNumber): Promise<BlockId> {
     // Check if block intersects any existing blocks:
     const conflictingBlocks = await this.blocks.findBlocks({
       streetFilter: {
         street,
-        buildingNumbers:{
+        lotNumbers:{
           start: startNumber,
           end: endNumber
         }
@@ -83,13 +83,13 @@ export default class GeographyService {
     return neighbourhoods.get(block.neighbourhood);
   }
 
-  async findBlockByAddress(street: StreetId, buildingNumber: BuildingNumber): Promise<Block> {
+  async findBlockByAddress(street: StreetId, lotNumber: LotNumber): Promise<Block> {
     const blockIds = await this.blocks.findBlocks({
       streetFilter: {
         street: street,
-        buildingNumbers: {
-          start: buildingNumber,
-          end: buildingNumber,
+        lotNumbers: {
+          start: lotNumber,
+          end: lotNumber,
         },
       },
     });
@@ -97,8 +97,8 @@ export default class GeographyService {
     return blocks.get(blockIds[0]);
   }
 
-  async findNeighbourhoodByAddress(street: StreetId, buildingNumber: BuildingNumber): Promise<Neighbourhood> {
-    const block = await this.findBlockByAddress(street, buildingNumber);
+  async findNeighbourhoodByAddress(street: StreetId, lotNumber: LotNumber): Promise<Neighbourhood> {
+    const block = await this.findBlockByAddress(street, lotNumber);
     const neighbourhoodId = block.neighbourhood;
     const neighbourhoods = await this.neighbourhoods.getNeighbourhoods([neighbourhoodId]);
     return neighbourhoods.get(neighbourhoodId);

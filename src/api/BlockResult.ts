@@ -8,15 +8,15 @@ export default class BlockResult {
   private readonly geographySvc: GeographyService;
   private readonly propertySvc: PropertyService;
   readonly id: string;
-  readonly startNumber: number;
-  readonly endNumber: number;
+  readonly startLotNumber: number;
+  readonly endLotNumber: number;
 
   constructor(geographySvc: GeographyService, propertySvc: PropertyService, block: Block) {
     this.geographySvc = geographySvc;
     this.propertySvc = propertySvc;
     this.id = block.id;
-    this.startNumber = block.startNumber;
-    this.endNumber = block.endNumber;
+    this.startLotNumber = block.startNumber;
+    this.endLotNumber = block.endNumber;
   }
 
   async street(): Promise<StreetResult> {

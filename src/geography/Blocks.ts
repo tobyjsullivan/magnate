@@ -1,14 +1,14 @@
 import {v4 as uuidv4} from 'uuid';
 import Block, { BlockId } from '../model/Block';
 import { NeighbourhoodId } from '../model/Neighbourhood';
-import { BuildingNumber } from '../model/Property';
+import { LotNumber } from '../model/Property';
 import { StreetId } from '../model/Street';
 
 interface StreetFilter {
   street: StreetId,
-  buildingNumbers?: {
-    start: BuildingNumber,
-    end: BuildingNumber,
+  lotNumbers?: {
+    start: LotNumber,
+    end: LotNumber,
   },
 }
 
@@ -24,7 +24,7 @@ interface FindBlocksCriteria {
 export default class Blocks {
   private readonly blocksById: Map<BlockId, Block> = new Map();
 
-  async createBlock(street: StreetId, neighbourhood: NeighbourhoodId, startNumber: BuildingNumber, endNumber: BuildingNumber): Promise<BlockId> {
+  async createBlock(street: StreetId, neighbourhood: NeighbourhoodId, startNumber: LotNumber, endNumber: LotNumber): Promise<BlockId> {
     const id = uuidv4();
     const block: Block = {
       id,
@@ -45,12 +45,12 @@ export default class Blocks {
     }
 
     if (criteria.streetFilter) {
-      const {street, buildingNumbers} = criteria.streetFilter;
+      const {street, lotNumbers} = criteria.streetFilter;
 
       matches = matches.filter(block => block.street === street);
 
-      if (buildingNumbers) {
-        matches = matches.filter(block => block.endNumber >= buildingNumbers.start && block.startNumber <= buildingNumbers.end);
+      if (lotNumbers) {
+        matches = matches.filter(block => block.endNumber >= lotNumbers.start && block.startNumber <= lotNumbers.end);
       }
     }
 

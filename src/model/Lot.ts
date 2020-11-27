@@ -1,10 +1,10 @@
 import { StreetId } from "./Street";
 
-export type PropertyId = string;
+export type LotId = string;
 export type LotNumber = number;
 
-export default interface Property {
-  id: PropertyId,
+export default interface Lot {
+  id: LotId,
   street: StreetId,
   lotNumber: LotNumber,
 }

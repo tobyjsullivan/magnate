@@ -4,7 +4,7 @@ export const schema = buildSchema(`
 type Neighbourhood {
   id: String!
   name: String!
-  properties: [Property]!
+  lots: [Lot]!
 }
 
 type Block {
@@ -21,7 +21,7 @@ type Street {
   blocks: [Block]!
 }
 
-type Property {
+type Lot {
   id: String!
   street: Street!
   lotNumber: Int!
@@ -30,13 +30,13 @@ type Property {
 
 type Listing {
   id: String!
-  property: Property!
+  lot: Lot!
   askingPrice: Int!
 }
 
 type Query {
   allNeighbourhoods: [Neighbourhood]!
-  allProperties: [Property]!
+  allLots: [Lot]!
   allListings: [Listing]!
 }
 `);

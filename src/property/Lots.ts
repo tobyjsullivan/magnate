@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from 'uuid';
-import Property, { LotNumber as LotNumber, PropertyId } from '../model/Property';
+import Lot, { LotNumber, LotId } from '../model/Lot';
 import { StreetId } from '../model/Street';
 
 interface StreetFilter {
@@ -10,26 +10,26 @@ interface StreetFilter {
   },
 }
 
-interface FindPropertyCriteria {
+interface FindLotCriteria {
   streetFilter?: StreetFilter,
 }
 
-export default class Properties {
-  private readonly propertiesById: Map<PropertyId, Property> = new Map();
+export default class Lots {
+  private readonly lotsById: Map<LotId, Lot> = new Map();
 
-  async createProperty(street: StreetId, lotNumber: LotNumber): Promise<PropertyId> {
+  async createLots(street: StreetId, lotNumber: LotNumber): Promise<LotId> {
     const id = uuidv4();
-    const property: Property = {
+    const lot: Lot = {
       id,
       street,
       lotNumber,
     };
-    this.propertiesById.set(id, property);
+    this.lotsById.set(id, lot);
     return id;
   }
 
-  async findProperties(criteria: FindPropertyCriteria): Promise<ReadonlyArray<PropertyId>> {
-    let matches: Array<Property> = [...this.propertiesById.values()];
+  async findLots(criteria: FindLotCriteria): Promise<ReadonlyArray<LotId>> {
+    let matches: Array<Lot> = [...this.lotsById.values()];
 
     const {streetFilter} = criteria;
     if (streetFilter) {
@@ -44,15 +44,15 @@ export default class Properties {
     return matches.map(prop => prop.id);
   }
 
-  async getProperties(ids: ReadonlyArray<PropertyId>): Promise<Map<PropertyId, Property>> {
+  async getLots(ids: ReadonlyArray<LotId>): Promise<Map<LotId, Lot>> {
     if (ids.length === 0) {
       return new Map();
     }
 
     const result = new Map();
     for (const id of ids) {
-      if (this.propertiesById.has(id)) {
-        result.set(id, this.propertiesById.get(id));
+      if (this.lotsById.has(id)) {
+        result.set(id, this.lotsById.get(id));
       }
     }
     return result;

@@ -1,19 +1,19 @@
 import {v4 as uuidv4} from 'uuid';
 import Listing, { ListingId } from "../model/Listing";
-import { PropertyId } from '../model/Property';
+import { LotId } from '../model/Lot';
 
 interface FindListingsCriteria {
-  property?: PropertyId,
+  lot?: LotId,
 }
 
 export default class Listings {
   private readonly listingsById: Map<ListingId, Listing> = new Map();
 
-  async createListing(property: PropertyId, askingPrice: number): Promise<ListingId> {
+  async createListing(lot: LotId, askingPrice: number): Promise<ListingId> {
     const id = uuidv4();
     const listing: Listing = {
       id,
-      property,
+      lot: lot,
       askingPrice,
     };
     this.listingsById.set(id, listing);
@@ -22,8 +22,8 @@ export default class Listings {
 
   async findListings(criteria: FindListingsCriteria): Promise<ReadonlyArray<ListingId>> {
     let matches = [...this.listingsById.values()];
-    if (criteria.property) {
-      matches = matches.filter(listing => listing.property === criteria.property);
+    if (criteria.lot) {
+      matches = matches.filter(listing => listing.lot === criteria.lot);
     }
 
     return matches.map(listing => listing.id);

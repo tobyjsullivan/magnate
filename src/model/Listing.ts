@@ -1,9 +1,9 @@
-import { PropertyId } from "./Property";
+import { LotId } from "./Lot";
 
 export type ListingId = string;
 
 export default interface Listing {
   id: ListingId,
-  property: PropertyId,
+  lot: LotId,
   askingPrice: number,
 }

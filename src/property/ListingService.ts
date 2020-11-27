@@ -1,5 +1,5 @@
 import Listing, { ListingId } from "../model/Listing";
-import { PropertyId } from "../model/Property";
+import { LotId } from "../model/Lot";
 import Listings from "./Listings";
 
 export default class ListingService {
@@ -9,14 +9,14 @@ export default class ListingService {
     this.listings = listings;
   }
 
-  async createListing(property: PropertyId, askingPrice: number): Promise<ListingId> {
+  async createListing(lot: LotId, askingPrice: number): Promise<ListingId> {
     // Check if a listing already exists for this property
-    const found = await this.listings.findListings({property});
+    const found = await this.listings.findListings({lot: lot});
     if (found.length > 0) {
-      throw new Error(`Listing already exists for property: ${property}`);
+      throw new Error(`Listing already exists for property: ${lot}`);
     }
 
-    return await this.listings.createListing(property, askingPrice);
+    return await this.listings.createListing(lot, askingPrice);
   }
 
   async findAllListings(): Promise<ReadonlyArray<Listing>> {

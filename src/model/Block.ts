@@ -1,5 +1,5 @@
 import { NeighbourhoodId } from "./Neighbourhood";
-import { LotNumber } from "./Property";
+import { LotNumber } from "./Lot";
 import { StreetId } from "./Street";
 
 export type BlockId = string;

@@ -1,6 +1,6 @@
 import Block, { BlockId } from "../model/Block";
 import Neighbourhood, { NeighbourhoodId } from "../model/Neighbourhood";
-import { LotNumber } from "../model/Property";
+import { LotNumber } from "../model/Lot";
 import Street, { StreetId } from "../model/Street";
 import Blocks from "./Blocks";
 import Neighbourhoods from "./Neighbourhoods";

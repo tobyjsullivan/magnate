@@ -2,9 +2,9 @@ import GeographyService from "../geography/GeographyService";
 import PropertyService from "../property/PropertyService";
 import Worker from "./Worker";
 
-const PROPERTY_CONSTRUCTION_INTERVAL_MILLIS = 5 * 1000;
+const LOT_CONSTRUCTION_INTERVAL_MILLIS = 5 * 1000;
 
-// Builds new property and sells it off to the
+// Builds new lots
 export default class ConstructionWorker extends Worker {
   private readonly geographySvc: GeographyService;
   private readonly propertySvc: PropertyService;
@@ -36,9 +36,9 @@ export default class ConstructionWorker extends Worker {
 
     const lotNum = block.startNumber + Math.round(Math.random() * (block.endNumber - block.startNumber));
 
-    const propertyId = await this.propertySvc.createProperty(block.street, lotNum);
-    console.log(`Created new property: ${propertyId}`);
+    const lotId = await this.propertySvc.createLot(block.street, lotNum);
+    console.log(`Created new lot: ${lotId}`);
 
-    this.nextConstruction += PROPERTY_CONSTRUCTION_INTERVAL_MILLIS;
+    this.nextConstruction += LOT_CONSTRUCTION_INTERVAL_MILLIS;
   }
 }

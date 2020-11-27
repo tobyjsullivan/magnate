@@ -1,4 +1,4 @@
-import Property from "../model/Property";
+import Lot from "../model/Lot";
 import ListingService from "../property/ListingService";
 import PropertyService from "../property/PropertyService";
 import LandTitleRegistry from "../property/LandTitleRegistry";
@@ -19,39 +19,39 @@ export default class SellerAgentWorker extends Worker {
   }
 
   async tick() {
-    // Check if we need to list any new properties.
+    // Check if we need to list any new lots.
     const allListings = await this.listingSvc.findAllListings();
     if (allListings.length >= NUM_DESIRED_LISTINGS) {
       return;
     }
 
-    const listingsByPropertyId = new Map();
+    const listingsByLotId = new Map();
     for (const listing of allListings) {
-      listingsByPropertyId.set(listing.property, listing);
+      listingsByLotId.set(listing.lot, listing);
     }
 
     // Need to create at least one more listings.
-    // Find a property that is unowned.
-    const properties = await this.propertySvc.findAllProperties();
-    let propertyToList = undefined;
-    for (const property of properties) {
-      const owner = await this.landTitleRegistry.searchOwner(property.id);
-      if (owner === undefined && !listingsByPropertyId.has(property.id)) {
-        propertyToList = property;
+    // Find a lot that is unowned.
+    const lots = await this.propertySvc.findAllLots();
+    let lotToList = undefined;
+    for (const lot of lots) {
+      const owner = await this.landTitleRegistry.searchOwner(lot.id);
+      if (owner === undefined && !listingsByLotId.has(lot.id)) {
+        lotToList = lot;
         break;
       }
     }
-    if (propertyToList !== undefined) {
+    if (lotToList !== undefined) {
       // Create the listing
-      const value = this.assessPropertyValue(propertyToList);
-      const listingId = await this.listingSvc.createListing(propertyToList.id, value);
+      const value = this.assessLotValue(lotToList);
+      const listingId = await this.listingSvc.createListing(lotToList.id, value);
       console.log(`Created listing: ${listingId}`);
     }
 
     // We only create one listing per tick.
   }
 
-  private assessPropertyValue(property: Property): number {
+  private assessLotValue(lot: Lot): number {
     // TODO
     return 200000.00;
   }

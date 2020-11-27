@@ -1,29 +1,29 @@
 import { PersonId } from "../model/Person";
-import { PropertyId } from "../model/Property";
+import { LotId } from "../model/Lot";
 
 export default class LandTitleRegistry {
-  private readonly ownersByPropertyId: Map<PropertyId, PersonId> = new Map();
+  private readonly ownersByLotId: Map<LotId, PersonId> = new Map();
 
-  async searchOwner(property: PropertyId): Promise<PersonId | undefined> {
-    if (!this.ownersByPropertyId.has(property)) {
+  async searchOwner(lot: LotId): Promise<PersonId | undefined> {
+    if (!this.ownersByLotId.has(lot)) {
       return undefined;
     }
-    return this.ownersByPropertyId.get(property);
+    return this.ownersByLotId.get(lot);
   }
 
-  async transferOwnership(property: PropertyId, currentOwner: PersonId | undefined, newOwner: PersonId) {
+  async transferOwnership(lot: LotId, currentOwner: PersonId | undefined, newOwner: PersonId) {
     if (currentOwner === undefined) {
-      if (this.ownersByPropertyId.has(property)) {
-        throw new Error(`Attempted to transfer owned property without specifying current owner. ${property}`);
+      if (this.ownersByLotId.has(lot)) {
+        throw new Error(`Attempted to transfer owned property without specifying current owner. ${lot}`);
       }
 
-      this.ownersByPropertyId.set(property, newOwner);
+      this.ownersByLotId.set(lot, newOwner);
     } else {
-      if (this.ownersByPropertyId.get(property) !== currentOwner) {
-        throw new Error(`Attemted to transfer owned property but specified wrong owner. ${property}`);
+      if (this.ownersByLotId.get(lot) !== currentOwner) {
+        throw new Error(`Attemted to transfer owned property but specified wrong owner. ${lot}`);
       }
 
-      this.ownersByPropertyId.set(property, newOwner);
+      this.ownersByLotId.set(lot, newOwner);
     }
   }
 }

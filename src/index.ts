@@ -4,7 +4,7 @@ import { buildHandler } from './api/ApiHandler';
 import Blocks from './geography/Blocks';
 import Initializer from './Initializer';
 import Neighbourhoods from './geography/Neighbourhoods';
-import Properties from './property/Properties';
+import Lots from './property/Lots';
 import Streets from './geography/Streets';
 import GeographyService from './geography/GeographyService';
 import PropertyService from './property/PropertyService';
@@ -20,11 +20,11 @@ const PORT = 18237;
 const neighbourhoods = new Neighbourhoods();
 const streets = new Streets();
 const blocks = new Blocks();
-const properties = new Properties();
+const lots = new Lots();
 const listings = new Listings();
 
 const geographySvc = new GeographyService(neighbourhoods, streets, blocks);
-const propertySvc = new PropertyService(properties, geographySvc);
+const propertySvc = new PropertyService(lots, geographySvc);
 const listingSvc = new ListingService(listings);
 const landTitleRegistry = new LandTitleRegistry();
 

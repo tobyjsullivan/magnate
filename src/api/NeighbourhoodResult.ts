@@ -1,7 +1,7 @@
 import GeographyService from "../geography/GeographyService";
 import Neighbourhood from "../model/Neighbourhood";
 import PropertyService from "../property/PropertyService";
-import PropertyResult from "./PropertyResult";
+import LotResult from "./LotResult";
 
 export default class NeighbourhoodResult {
   private readonly geographySvc: GeographyService;
@@ -16,8 +16,8 @@ export default class NeighbourhoodResult {
     this.name = neighbourhood.name;
   }
 
-  async properties(): Promise<ReadonlyArray<PropertyResult>> {
-    const properties = await this.propertySvc.findPropertiesByNeighbourhood(this.id);
-    return properties.map(prop => new PropertyResult(this.propertySvc, this.geographySvc, prop));
+  async lots(): Promise<ReadonlyArray<LotResult>> {
+    const lots = await this.propertySvc.findLotsByNeighbourhood(this.id);
+    return lots.map(lot => new LotResult(this.propertySvc, this.geographySvc, lot));
   }
 }

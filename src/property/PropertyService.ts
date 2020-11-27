@@ -1,21 +1,21 @@
 import GeographyService from "../geography/GeographyService";
 import Neighbourhood, { NeighbourhoodId } from "../model/Neighbourhood";
-import Property, { LotNumber, PropertyId } from "../model/Property";
+import Lot, { LotNumber, LotId } from "../model/Lot";
 import Street, { StreetId } from "../model/Street";
-import Properties from "./Properties";
+import Lots from "./Lots";
 
 export default class PropertyService {
-  private readonly properties: Properties;
+  private readonly lots: Lots;
   private readonly geographySvc: GeographyService;
 
-  constructor(properties: Properties, geographySvc: GeographyService) {
-    this.properties = properties;
+  constructor(lots: Lots, geographySvc: GeographyService) {
+    this.lots = lots;
     this.geographySvc = geographySvc;
   }
 
-  async createProperty(street: StreetId, number: LotNumber): Promise<PropertyId> {
-    // Check if the property already exists
-    const conflictingIds = await this.properties.findProperties({
+  async createLot(street: StreetId, number: LotNumber): Promise<LotId> {
+    // Check if the lot already exists
+    const conflictingIds = await this.lots.findLots({
       streetFilter: {
         street,
         lotNumbers: {
@@ -25,41 +25,41 @@ export default class PropertyService {
       },
     });
     if (conflictingIds.length > 0) {
-      throw new Error(`Cannot create Property when one already exists at that address: ${conflictingIds[0]}`);
+      throw new Error(`Cannot create Lot when one already exists at that address: ${conflictingIds[0]}`);
     }
 
-    return await this.properties.createProperty(street, number);
+    return await this.lots.createLots(street, number);
   }
 
-  async getProperties(propertyIds: PropertyId[]): Promise<Map<PropertyId, Property>> {
-    return await this.properties.getProperties(propertyIds);
+  async getLots(lotIds: LotId[]): Promise<Map<LotId, Lot>> {
+    return await this.lots.getLots(lotIds);
   }
 
-  async getPropertyStreet(propertyId: PropertyId): Promise<Street> {
-    const properties = await this.properties.getProperties([propertyId]);
-    const property = properties.get(propertyId);
-    const streetMap = await this.geographySvc.getStreets([property.street]);
-    return streetMap.get(property.street);
+  async getLotStreet(lotId: LotId): Promise<Street> {
+    const lots = await this.lots.getLots([lotId]);
+    const lot = lots.get(lotId);
+    const streetMap = await this.geographySvc.getStreets([lot.street]);
+    return streetMap.get(lot.street);
   }
 
-  async getPropertyNeighbourhood(propertyId: PropertyId): Promise<Neighbourhood> {
-    const properties = await this.properties.getProperties([propertyId]);
-    const property = properties.get(propertyId);
-    return await this.geographySvc.findNeighbourhoodByAddress(property.street, property.lotNumber);
+  async getLotNeighbourhood(lotId: LotId): Promise<Neighbourhood> {
+    const lots = await this.lots.getLots([lotId]);
+    const lot = lots.get(lotId);
+    return await this.geographySvc.findNeighbourhoodByAddress(lot.street, lot.lotNumber);
   }
 
-  async findAllProperties(): Promise<ReadonlyArray<Property>> {
-    const propertyIds = await this.properties.findProperties({});
-    const properties = await this.properties.getProperties(propertyIds);
-    return [...properties.values()];
+  async findAllLots(): Promise<ReadonlyArray<Lot>> {
+    const lotIds = await this.lots.findLots({});
+    const lots = await this.lots.getLots(lotIds);
+    return [...lots.values()];
   }
 
-  async findPropertiesByNeighbourhood(neighbourhoodId: NeighbourhoodId): Promise<ReadonlyArray<Property>> {
+  async findLotsByNeighbourhood(neighbourhoodId: NeighbourhoodId): Promise<ReadonlyArray<Lot>> {
     const blocks = await this.geographySvc.getNeighbourhoodBlocks(neighbourhoodId);
 
-    const allPropertyIds: PropertyId[] = [];
+    const allLotIds: LotId[] = [];
     for (const block of blocks) {
-      const propertyIds = await this.properties.findProperties({
+      const lotIds = await this.lots.findLots({
         streetFilter: {
           street: block.street,
           lotNumbers: {
@@ -68,8 +68,8 @@ export default class PropertyService {
           },
         },
       });
-      propertyIds.forEach(id => allPropertyIds.push(id));
+      lotIds.forEach(id => allLotIds.push(id));
     }
-    return [...(await this.properties.getProperties(allPropertyIds)).values()];
+    return [...(await this.lots.getLots(allLotIds)).values()];
   }
 }

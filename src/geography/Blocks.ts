@@ -1,7 +1,7 @@
 import {v4 as uuidv4} from 'uuid';
 import Block, { BlockId } from '../model/Block';
 import { NeighbourhoodId } from '../model/Neighbourhood';
-import { LotNumber } from '../model/Property';
+import { LotNumber } from '../model/Lot';
 import { StreetId } from '../model/Street';
 
 interface StreetFilter {
